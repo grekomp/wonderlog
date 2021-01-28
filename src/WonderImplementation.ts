@@ -90,7 +90,10 @@ export class WonderImplementation {
       }
     }
 
-    return [strings.join(""), ...styles, ...objects];
+    const joinedStrings = strings.join("");
+    return joinedStrings
+      ? [joinedStrings, ...styles, ...objects]
+      : [...objects];
   }
   Flatten(parent: WonderImplementation): LogEntry[] {
     const mergedParent = WonderHelper.merge(parent, this);
