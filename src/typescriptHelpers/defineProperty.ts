@@ -5,8 +5,8 @@ type InferValue<Prop extends PropertyKey, Desc> = Desc extends {
   ? never
   : Desc extends { value: infer T }
   ? Record<Prop, T>
-  : Desc extends { get(): infer T }
-  ? Record<Prop, T>
+  : Desc extends { get(): infer K }
+  ? Record<Prop, K>
   : never;
 
 type DefineProperty<

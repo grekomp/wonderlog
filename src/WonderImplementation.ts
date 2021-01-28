@@ -1,5 +1,6 @@
 // tslint:disable: no-console
-import { LogFormatter, NumberLogFormatter } from "./LogFormatter";
+import { LogFormatter } from "./LogFormatter";
+import { NumberLogFormatter } from "./NumberLogFormatter";
 import LogStyle from "./LogStyle";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";

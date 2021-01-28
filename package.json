@@ -5,7 +5,8 @@
   "main": "lib/Wonder.js",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "format:next": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" --no-error-on-unmatched-pattern",
     "lint": "tslint -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
