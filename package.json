@@ -8,8 +8,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:next": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" --no-error-on-unmatched-pattern",
     "lint": "tslint -p tsconfig.json",
-    "test": "jest --config jestconfig.json",
-    "test:watch": "jest --config jestconfig.json --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
@@ -44,5 +44,23 @@
   },
   "files": [
     "lib/**/*"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.(t|j)sx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testPathIgnorePatterns": [
+      "/lib/",
+      "/node_modules/"
+    ]
+  }
 }
