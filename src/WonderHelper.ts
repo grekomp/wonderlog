@@ -43,6 +43,8 @@ export default class WonderHelper {
     // Copy properties of wonder onto the wonder function
     definePropertyValue(wonderFunction, "options", wonder);
 
+    definePropertyValue(wonderFunction, "toString", wonder);
+
     definePropertyValue(wonderFunction, "log", wonder);
     definePropertyValue(wonderFunction, "debug", wonder);
     definePropertyValue(wonderFunction, "warn", wonder);

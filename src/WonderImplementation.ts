@@ -24,6 +24,10 @@ export class WonderImplementation {
     );
   }
 
+  toString(): string {
+    return "Wonder [" + JSON.stringify(this.options) + "]";
+  }
+
   //#region Logging methods
   log(...entries: LogEntry[]) {
     console.log(...this.GenerateLogElements(entries));
