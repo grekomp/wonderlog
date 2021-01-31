@@ -40,6 +40,28 @@ const wonderTestCases: WonderTestCase[] = [
       "color: #F28B54",
     ],
   },
+  {
+    elements: [
+      "first",
+      wonder.formatStringAsLiteral("second"),
+      "third",
+      wonder.formatNumberAsLiteral(345.23),
+    ],
+    expected: [
+      '%cfirst%c %c"%c%csecond%c%c"%c %cthird%c %c345.23',
+      "",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "",
+      "",
+      "color: #9980FF",
+    ],
+  },
 ];
 test.each(wonderTestCases)("wonder test case %#", (tc) => {
   const w = tc.wonderInstance ?? wonder;

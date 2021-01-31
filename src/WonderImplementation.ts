@@ -331,14 +331,13 @@ export class WonderImplementation {
             style: new LogStyle({
               color: "#F28B54",
             }),
-            trailingSeparator: "",
+            defaultTrailingSeparator: "",
             prefixValue: WonderHelper.create(undefined, {
               content: ['"'],
               trailingSeparator: "",
             }),
             postfixValue: WonderHelper.create(undefined, {
               content: ['"'],
-              trailingSeparator: parent.options.trailingSeparator,
             }),
           });
         }
@@ -429,4 +428,5 @@ export class WonderImplementation {
       )
     );
   }
+  //#endregion Formatters
 }
