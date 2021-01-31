@@ -74,13 +74,14 @@ export class WonderImplementation {
           strings.push(
             "%c" +
               entry.options.content[0] +
-              "%c" +
               (i < lastWonderIndex
-                ? entry.options.trailingSeparator ??
-                  entry.options.defaultTrailingSeparator
+                ? "%c" +
+                  (entry.options.trailingSeparator ??
+                    entry.options.defaultTrailingSeparator)
                 : "")
           );
-          styles.push(entry.options.style.GetCss(), "");
+          styles.push(entry.options.style.GetCss());
+          if (i < lastWonderIndex) styles.push("");
         } else {
           strings.push("%c" + flattenedEntries[i] + "%c ");
           styles.push("", "");
