@@ -34,7 +34,7 @@ export default class LogStyle {
   GetCss(): string {
     const cssEntries = [];
     for (const key in this) {
-      if (this[key] != null)
+      if (this[key] != null && typeof this[key] !== "function")
         cssEntries.push(key.replace("_", "-") + ": " + this[key]);
     }
     return cssEntries.join("; ");
