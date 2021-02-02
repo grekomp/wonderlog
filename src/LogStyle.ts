@@ -1,10 +1,6 @@
 // tslint:disable: variable-name
 
-/**
- * A container for css styles handled by Wonderlog
- * This class uses underscores for css properties that contain dashes i.e.: `border-radius`=>`border_radius`
- */
-export default class LogStyle {
+export type LogStyle = {
   color?: string;
   border?: string;
   border_radius?: string;
@@ -12,43 +8,27 @@ export default class LogStyle {
   font_weight?: string;
   font_style?: string;
   padding?: string;
+};
 
-  constructor(
-    styles: {
-      color?: string;
-      border?: string;
-      border_radius?: string;
-      background?: string;
-      font_weight?: string;
-      font_style?: string;
-      padding?: string;
-    } = {}
-  ) {
-    let key: keyof this;
-    // tslint:disable-next-line: forin
-    for (key in styles) {
-      this[key] = (styles as any)[key];
-    }
-  }
-
-  GetCss(): string {
+/**
+ * A container for css styles handled by Wonderlog
+ * This class uses underscores for css properties that contain dashes i.e.: `border-radius`=>`border_radius`
+ */
+export default class LogStyleHelper {
+  static GetCss(style: LogStyle): string {
     const cssEntries = [];
-    for (const key in this) {
-      if (this[key] != null && typeof this[key] !== "function")
-        cssEntries.push(key.replace("_", "-") + ": " + this[key]);
+    let key: keyof LogStyle;
+    for (key in style) {
+      if (style[key] != null)
+        cssEntries.push(key.replace("_", "-") + ": " + style[key]);
     }
     return cssEntries.join("; ");
   }
 
-  Merge(style: LogStyle): LogStyle {
-    const newStyle = new LogStyle(this);
-    let key: keyof LogStyle;
-    for (key in style) {
-      if (typeof style[key] === "function") continue;
-      if (style[key] == null) continue;
-
-      (newStyle as any)[key] = style[key];
-    }
-    return newStyle;
+  static Clone(style: LogStyle): LogStyle {
+    return Object.assign({}, style);
+  }
+  static Merge(...styles: LogStyle[]): LogStyle {
+    return Object.assign({}, ...styles);
   }
 }

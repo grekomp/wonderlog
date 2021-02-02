@@ -1,3 +1,4 @@
+import LogStyleHelper from "./LogStyle";
 import {
   definePropertyGetter,
   definePropertyValue,
@@ -17,7 +18,10 @@ export default class WonderHelper {
     // Apply changes
     if (options) {
       if (options.style != null)
-        wonder.options.style = wonder.options.style.Merge(options.style);
+        wonder.options.style = LogStyleHelper.Merge(
+          wonder.options.style,
+          options.style
+        );
       if (options.content != null) wonder.options.content = options.content;
       if (options.prefixValue != null)
         wonder.options.prefixValue = WonderHelper.create(options.prefixValue);
@@ -130,7 +134,7 @@ export default class WonderHelper {
     second: WonderImplementation
   ): Wonder {
     return WonderHelper.create(undefined, {
-      style: first.options.style.Merge(second.options.style),
+      style: LogStyleHelper.Merge(first.options.style, second.options.style),
       content: [...first.options.content, ...second.options.content],
       formatters: [...first.options.formatters, ...second.options.formatters],
       prefixValue: second.options.prefixValue,

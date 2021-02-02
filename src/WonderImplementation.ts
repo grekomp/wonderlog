@@ -5,6 +5,7 @@ import LogStyle from "./LogStyle";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
 import { WonderOptions } from "./WonderOptions";
+import LogStyleHelper from "./LogStyle";
 
 export class WonderImplementation {
   options: WonderOptions;
@@ -12,7 +13,7 @@ export class WonderImplementation {
   constructor(options?: WonderOptions) {
     this.options = Object.assign(
       {
-        style: new LogStyle(),
+        style: {},
         content: [],
         prefixValue: undefined,
         postfixValue: undefined,
@@ -84,7 +85,7 @@ export class WonderImplementation {
                     entry.options.defaultTrailingSeparator)
                 : "")
           );
-          styles.push(entry.options.style.GetCss());
+          styles.push(LogStyleHelper.GetCss(entry.options.style));
           if (i < lastWonderIndex) styles.push("");
         } else {
           strings.push("%c" + flattenedEntries[i] + "%c ");
@@ -205,7 +206,7 @@ export class WonderImplementation {
   //#region Setting styles
   color(color: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ color }),
+      style: { color },
     });
   }
   get red(): Wonder {
@@ -226,7 +227,7 @@ export class WonderImplementation {
 
   bg(bgColor: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ background: bgColor }),
+      style: { background: bgColor },
     });
   }
   get bgBlack(): Wonder {
@@ -238,7 +239,7 @@ export class WonderImplementation {
 
   fontWeight(fontWeight?: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ font_weight: fontWeight }),
+      style: { font_weight: fontWeight },
     });
   }
   get bold(): Wonder {
@@ -247,7 +248,7 @@ export class WonderImplementation {
 
   fontStyle(fontStyle?: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ font_style: fontStyle }),
+      style: { font_style: fontStyle },
     });
   }
   get italic(): Wonder {
@@ -256,58 +257,58 @@ export class WonderImplementation {
 
   padding(padding?: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ padding }),
+      style: { padding },
     });
   }
   border(border?: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ border }),
+      style: { border },
     });
   }
   borderRadius(borderRadius?: string): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({ border_radius: borderRadius }),
+      style: { border_radius: borderRadius },
     });
   }
   //#endregion Setting styles
   //#region Style combinations
   get tag(): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({
+      style: {
         padding: "0 4px",
         border: "1px solid #666",
         border_radius: "2px",
         background: "rgba(0,0,0,0.8)",
-      }),
+      },
     });
   }
   get dangerTag(): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({
+      style: {
         padding: "0 4px",
         border_radius: "2px",
         background: "hsl(348, 100%, 61%)",
         color: "white",
-      }),
+      },
     });
   }
   get successTag(): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({
+      style: {
         padding: "0 4px",
         border_radius: "2px",
         background: "hsl(141, 71%, 48%)",
-      }),
+      },
     });
   }
   get warningTag(): Wonder {
     return WonderHelper.create(this, {
-      style: new LogStyle({
+      style: {
         padding: "0 4px",
         border_radius: "2px",
         background: "hsl(48, 100%, 67%)",
         color: "rgba(0,0,0,.7)",
-      }),
+      },
     });
   }
   //#endregion Style combinations
@@ -328,9 +329,9 @@ export class WonderImplementation {
         (entry, parent) => {
           return WonderHelper.create(undefined, {
             content: [entry],
-            style: new LogStyle({
+            style: {
               color: "#F28B54",
-            }),
+            },
             defaultTrailingSeparator: "",
             prefixValue: WonderHelper.create(undefined, {
               content: ['"'],

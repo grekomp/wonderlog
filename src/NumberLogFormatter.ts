@@ -20,11 +20,9 @@ export class NumberLogFormatter extends LogFormatter {
         ((entry, parent) =>
           WonderHelper.create(undefined, {
             content: [this.numberFormat.format(entry)],
-            style:
-              style ||
-              new LogStyle({
-                color: "#9980FF",
-              }),
+            style: style || {
+              color: "#9980FF",
+            },
             trailingSeparator: parent.options.trailingSeparator,
           })),
       priority
