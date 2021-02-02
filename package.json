@@ -1,6 +1,6 @@
 {
   "name": "wonderlog-console",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Wonderlog is a browser console styling utility",
   "main": "lib/Wonder.js",
   "scripts": {
