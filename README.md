@@ -37,9 +37,7 @@ wonder.log(wonder.tag("Text in a tag"), wonder.dangerTag("Text in a red tag"));
 
 // ...or use custom values!
 wonder.log(wonder.color("#FF00FF")("Magenta text"));
-wonder.log(
-  wonder.backgroud("solid black").white("White text on a black background");
-);
+wonder.log(wonder.bg("black").white("White text on a black background"));
 ```
 
 Nesting styles:
