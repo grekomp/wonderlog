@@ -1,4 +1,5 @@
 import { wonder, Wonder } from "./Wonder";
+import WonderHelper from "./WonderHelper";
 
 type WonderTestCase = {
   wonderInstance?: Wonder;
@@ -65,5 +66,5 @@ const wonderTestCases: WonderTestCase[] = [
 ];
 test.each(wonderTestCases)("wonder test case %#", (tc) => {
   const w = tc.wonderInstance ?? wonder;
-  expect(w.GenerateLogElements(tc.elements)).toEqual(tc.expected);
+  expect(WonderHelper.GenerateLogElements(w, tc.elements)).toEqual(tc.expected);
 });

@@ -31,156 +31,27 @@ export class WonderImplementation {
 
   //#region Logging methods
   log(...entries: LogEntry[]) {
-    console.log(...this.GenerateLogElements(entries));
+    console.log(...WonderHelper.GenerateLogElements(this, entries));
   }
   debug(...entries: LogEntry[]): void {
-    console.debug(...this.GenerateLogElements(entries));
+    console.debug(...WonderHelper.GenerateLogElements(this, entries));
   }
   warn(...entries: LogEntry[]): void {
-    console.warn(...this.GenerateLogElements(entries));
+    console.warn(...WonderHelper.GenerateLogElements(this, entries));
   }
   error(...entries: LogEntry[]): void {
-    console.error(...this.GenerateLogElements(entries));
+    console.error(...WonderHelper.GenerateLogElements(this, entries));
   }
   group(...entries: LogEntry[]): void {
-    console.group(...this.GenerateLogElements(entries));
+    console.group(...WonderHelper.GenerateLogElements(this, entries));
   }
   groupCollapsed(...entries: LogEntry[]): void {
-    console.groupCollapsed(...this.GenerateLogElements(entries));
+    console.groupCollapsed(...WonderHelper.GenerateLogElements(this, entries));
   }
   groupEnd(): void {
     console.groupEnd();
   }
 
-  GenerateLogElements(entries: LogEntry[]): any[] {
-    // Flatten all entries
-    const flattenedEntries: LogEntry = [];
-    for (const entry of entries) {
-      if (WonderHelper.isWonder(entry)) {
-        flattenedEntries.push(...entry.Flatten(this));
-      } else {
-        flattenedEntries.push(entry);
-      }
-    }
-
-    // Find index of last wonder-type entry
-    let lastWonderIndex = flattenedEntries.length - 1;
-    for (; lastWonderIndex >= 0; lastWonderIndex--) {
-      if (WonderHelper.isWonder(flattenedEntries[lastWonderIndex])) break;
-    }
-
-    const strings: string[] = [];
-    const styles: string[] = [];
-    const objects: any[] = [];
-    for (let i = 0; i < flattenedEntries.length; i++) {
-      if (i <= lastWonderIndex) {
-        if (WonderHelper.isWonder(flattenedEntries[i])) {
-          const entry = flattenedEntries[i] as WonderImplementation;
-          strings.push(
-            "%c" +
-              entry.options.content[0] +
-              (i < lastWonderIndex
-                ? "%c" +
-                  (entry.options.trailingSeparator ??
-                    entry.options.defaultTrailingSeparator)
-                : "")
-          );
-          styles.push(LogStyleHelper.GetCss(entry.options.style));
-          if (i < lastWonderIndex) styles.push("");
-        } else {
-          strings.push("%c" + flattenedEntries[i] + "%c ");
-          styles.push("", "");
-        }
-      } else {
-        objects.push(flattenedEntries[i]);
-      }
-    }
-
-    const joinedStrings = strings.join("");
-    return joinedStrings
-      ? [joinedStrings, ...styles, ...objects]
-      : [...objects];
-  }
-  Flatten(parent: WonderImplementation): LogEntry[] {
-    const mergedParent = WonderHelper.merge(parent, this);
-    const mergedParentWithoutFormatters = WonderHelper.create(mergedParent, {
-      formatters: [],
-    });
-    const flattenedEntries: LogEntry[] = [];
-
-    if (this.options.prefixValue) {
-      if (WonderHelper.isWonder(this.options.prefixValue)) {
-        flattenedEntries.push(
-          ...this.options.prefixValue.Flatten(mergedParentWithoutFormatters)
-        );
-      } else {
-        flattenedEntries.push(
-          WonderHelper.create(mergedParentWithoutFormatters, {
-            content: [this.options.prefixValue],
-            prefixValue: undefined,
-            postfixValue: undefined,
-          })
-        );
-      }
-    }
-
-    mergedParent.options.formatters.sort(
-      (a, b) => (a.priority || 0) - (b.priority || 0)
-    );
-
-    for (const contentEntry of this.options.content) {
-      if (WonderHelper.isWonder(contentEntry)) {
-        flattenedEntries.push(...contentEntry.Flatten(mergedParent));
-      } else {
-        flattenedEntries.push(
-          ...this.GetFormattedEntry(
-            contentEntry,
-            mergedParent,
-            mergedParentWithoutFormatters
-          )
-        );
-      }
-    }
-
-    if (this.options.postfixValue) {
-      if (WonderHelper.isWonder(this.options.postfixValue)) {
-        flattenedEntries.push(
-          ...this.options.postfixValue.Flatten(mergedParentWithoutFormatters)
-        );
-      } else {
-        flattenedEntries.push(
-          WonderHelper.create(mergedParentWithoutFormatters, {
-            content: [this.options.postfixValue],
-            prefixValue: undefined,
-            postfixValue: undefined,
-          })
-        );
-      }
-    }
-    return flattenedEntries;
-  }
-  GetFormattedEntry(
-    entry: LogEntry,
-    mergedParent: Wonder,
-    mergedParentWithoutFormatters: Wonder
-  ): LogEntry[] {
-    for (const formatter of mergedParent.options.formatters) {
-      if (formatter.filter(entry, mergedParent)) {
-        return formatter
-          .format(entry, mergedParent)
-          .Flatten(mergedParentWithoutFormatters);
-      }
-    }
-
-    // Default
-    return [
-      WonderHelper.create(mergedParent, {
-        content: [entry],
-        prefixValue: undefined,
-        postfixValue: undefined,
-      }),
-    ];
-  }
   //#endregion Logging methods
   //#region Setting content
   _apply(content: LogEntry[]): Wonder {
