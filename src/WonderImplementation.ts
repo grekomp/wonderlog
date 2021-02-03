@@ -1,26 +1,17 @@
 // tslint:disable: no-console
 import { LogFormatter } from "./LogFormatter";
 import { NumberLogFormatter } from "./NumberLogFormatter";
-import LogStyle from "./LogStyle";
+import { LogStyle } from "./LogStyle";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
 import { WonderOptions } from "./WonderOptions";
-import LogStyleHelper from "./LogStyle";
 
-export class WonderImplementation {
+export default class WonderImplementation {
   options: WonderOptions;
 
   constructor(options?: WonderOptions) {
     this.options = Object.assign(
-      {
-        style: {},
-        content: [],
-        prefixValue: undefined,
-        postfixValue: undefined,
-        defaultTrailingSeparator: " ",
-        trailingSeparator: undefined,
-        formatters: [],
-      },
+      WonderHelper.newWonderOptions(),
       options ?? {}
     );
   }

@@ -1,11 +1,12 @@
-import LogStyleHelper from "./LogStyle";
+import LogStyleHelper from "./LogStyleHelper";
 import {
   definePropertyGetter,
   definePropertyValue,
 } from "./typescriptHelpers/defineProperty";
 import { LogEntry, Wonder } from "./Wonder";
-import { WonderImplementation } from "./WonderImplementation";
+import WonderImplementation from "./WonderImplementation";
 import { WonderOptions } from "./WonderOptions";
+import WonderOptionsHelper from "./WonderOptionsHelper";
 
 export default class WonderHelper {
   static newWonderInstance(options?: WonderOptions): Wonder {
@@ -78,13 +79,27 @@ export default class WonderHelper {
 
     return wonderFunction;
   }
+  static newWonderOptions(): WonderOptions {
+    return {
+      style: {},
+      content: [],
+      prefixValue: undefined,
+      postfixValue: undefined,
+      defaultTrailingSeparator: " ",
+      trailingSeparator: undefined,
+      formatters: [],
+    };
+  }
+
   static create(
     cloneFrom?: WonderImplementation,
     options?: Partial<WonderOptions>
   ): Wonder {
     // Create a new wonder instance
     const wonder = WonderHelper.newWonderInstance(
-      cloneFrom ? WonderHelper.cloneOptions(cloneFrom.options) : undefined
+      cloneFrom
+        ? WonderOptionsHelper.cloneOptions(cloneFrom.options)
+        : undefined
     );
 
     // Apply changes
@@ -110,23 +125,23 @@ export default class WonderHelper {
 
     return wonder;
   }
+  static createOptions(
+    cloneFrom?: WonderOptions,
+    options?: Partial<WonderOptions>
+  ) {
+    const newOptions = cloneFrom
+      ? WonderOptionsHelper.cloneOptions(cloneFrom)
+      : WonderHelper.newWonderOptions();
+  }
+
   static clone(
     cloneFrom: WonderImplementation | undefined
   ): WonderImplementation | undefined {
     return cloneFrom == null
       ? undefined
-      : new WonderImplementation(WonderHelper.cloneOptions(cloneFrom.options));
-  }
-  static cloneOptions(options: WonderOptions): WonderOptions {
-    return {
-      style: options.style,
-      content: [...options.content],
-      prefixValue: WonderHelper.create(options.prefixValue),
-      postfixValue: WonderHelper.create(options.postfixValue),
-      defaultTrailingSeparator: options.defaultTrailingSeparator,
-      trailingSeparator: options.trailingSeparator,
-      formatters: [...options.formatters],
-    };
+      : new WonderImplementation(
+          WonderOptionsHelper.cloneOptions(cloneFrom.options)
+        );
   }
   static isWonder(obj: any): obj is Wonder {
     return (
@@ -139,18 +154,25 @@ export default class WonderHelper {
     first: WonderImplementation,
     second: WonderImplementation
   ): Wonder {
-    return WonderHelper.create(undefined, {
-      style: LogStyleHelper.Merge(first.options.style, second.options.style),
-      content: [...first.options.content, ...second.options.content],
-      formatters: [...first.options.formatters, ...second.options.formatters],
-      prefixValue: second.options.prefixValue,
-      postfixValue: second.options.postfixValue,
+    return WonderHelper.create(
+      undefined,
+      WonderHelper.mergeOptions(first.options, second.options)
+    );
+  }
+  static mergeOptions(
+    first: WonderOptions,
+    second: WonderOptions
+  ): WonderOptions {
+    return {
+      style: LogStyleHelper.Merge(first.style, second.style),
+      content: [...first.content, ...second.content],
+      formatters: [...first.formatters, ...second.formatters],
+      prefixValue: second.prefixValue,
+      postfixValue: second.postfixValue,
       defaultTrailingSeparator:
-        second.options.defaultTrailingSeparator ??
-        first.options.defaultTrailingSeparator,
-      trailingSeparator:
-        second.options.trailingSeparator ?? first.options.trailingSeparator,
-    });
+        second.defaultTrailingSeparator ?? first.defaultTrailingSeparator,
+      trailingSeparator: second.trailingSeparator ?? first.trailingSeparator,
+    };
   }
 
   static GenerateLogElements(

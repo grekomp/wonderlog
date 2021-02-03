@@ -1,5 +1,5 @@
 import WonderHelper from "./WonderHelper";
-import { WonderImplementation } from "./WonderImplementation";
+import WonderImplementation from "./WonderImplementation";
 
 type WonderLogFunction = (...content: LogEntry[]) => Wonder;
 

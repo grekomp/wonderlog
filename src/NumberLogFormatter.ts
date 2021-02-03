@@ -1,7 +1,7 @@
-import LogStyle from "./LogStyle";
+import LogStyle from "./LogStyleHelper";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
-import { WonderImplementation } from "./WonderImplementation";
+import WonderImplementation from "./WonderImplementation";
 import { LogFormatter } from "./LogFormatter";
 
 export class NumberLogFormatter extends LogFormatter {

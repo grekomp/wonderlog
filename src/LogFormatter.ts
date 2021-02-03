@@ -1,5 +1,5 @@
 import { LogEntry, Wonder } from "./Wonder";
-import { WonderImplementation } from "./WonderImplementation";
+import WonderImplementation from "./WonderImplementation";
 
 export class LogFormatter {
   filter: (entry: LogEntry, parent: WonderImplementation) => boolean;
