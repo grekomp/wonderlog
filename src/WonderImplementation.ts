@@ -11,10 +11,7 @@ export default class WonderImplementation {
   options: WonderOptions;
 
   constructor(options?: WonderOptions) {
-    this.options = Object.assign(
-      WonderOptionsHelper.defaultOptions(),
-      options ?? {}
-    );
+    this.options = Object.assign(WonderOptionsHelper.default(), options ?? {});
   }
 
   toString(): string {

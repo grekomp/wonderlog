@@ -3,7 +3,7 @@ import WonderHelper from "./WonderHelper";
 import { WonderOptions } from "./WonderOptions";
 
 export default class WonderOptionsHelper {
-  static defaultOptions(): WonderOptions {
+  static default(): WonderOptions {
     return {
       style: {},
       content: [],
@@ -15,24 +15,21 @@ export default class WonderOptionsHelper {
     };
   }
 
-  static createOptions(
+  static create(
     cloneFrom?: WonderOptions,
     options?: Partial<WonderOptions>
   ): WonderOptions {
     const newOptions = cloneFrom
-      ? WonderOptionsHelper.cloneOptions(cloneFrom)
-      : WonderOptionsHelper.defaultOptions();
+      ? WonderOptionsHelper.clone(cloneFrom)
+      : WonderOptionsHelper.default();
 
     if (options) {
-      WonderOptionsHelper.overrideOptions(newOptions, options);
+      WonderOptionsHelper.overwrite(newOptions, options);
     }
 
     return newOptions;
   }
-  static mergeOptions(
-    first: WonderOptions,
-    second: WonderOptions
-  ): WonderOptions {
+  static merge(first: WonderOptions, second: WonderOptions): WonderOptions {
     return {
       style: LogStyleHelper.Merge(first.style, second.style),
       content: [...first.content, ...second.content],
@@ -45,7 +42,7 @@ export default class WonderOptionsHelper {
     };
   }
 
-  static overrideOptions(
+  static overwrite(
     initial: WonderOptions,
     overrides: Partial<WonderOptions>
   ): void {
@@ -76,7 +73,7 @@ export default class WonderOptionsHelper {
     }
   }
 
-  static cloneOptions(options: WonderOptions): WonderOptions {
+  static clone(options: WonderOptions): WonderOptions {
     return {
       style: options.style,
       content: [...options.content],

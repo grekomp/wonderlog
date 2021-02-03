@@ -85,7 +85,7 @@ export default class WonderHelper {
     options?: Partial<WonderOptions>
   ): Wonder {
     return WonderHelper.newWonderInstance(
-      WonderOptionsHelper.createOptions(cloneFrom?.options, options)
+      WonderOptionsHelper.create(cloneFrom?.options, options)
     );
   }
 
@@ -102,7 +102,7 @@ export default class WonderHelper {
   ): Wonder {
     return WonderHelper.create(
       undefined,
-      WonderOptionsHelper.mergeOptions(first.options, second.options)
+      WonderOptionsHelper.merge(first.options, second.options)
     );
   }
 
