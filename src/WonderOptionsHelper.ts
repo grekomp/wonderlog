@@ -1,9 +1,10 @@
 import LogStyleHelper from "./LogStyleHelper";
+import { Wonder } from "./Wonder";
 import WonderHelper from "./WonderHelper";
 import { WonderOptions } from "./WonderOptions";
 
 export default class WonderOptionsHelper {
-  static newWonderOptions(): WonderOptions {
+  static defaultOptions(): WonderOptions {
     return {
       style: {},
       content: [],
@@ -21,7 +22,7 @@ export default class WonderOptionsHelper {
   ) {
     const newOptions = cloneFrom
       ? WonderOptionsHelper.cloneOptions(cloneFrom)
-      : WonderOptionsHelper.newWonderOptions();
+      : WonderOptionsHelper.defaultOptions();
   }
   static mergeOptions(
     first: WonderOptions,
@@ -37,6 +38,37 @@ export default class WonderOptionsHelper {
         second.defaultTrailingSeparator ?? first.defaultTrailingSeparator,
       trailingSeparator: second.trailingSeparator ?? first.trailingSeparator,
     };
+  }
+
+  static overrideOptions(
+    initial: WonderOptions,
+    overrides: Partial<WonderOptions>
+  ): void {
+    // tslint:disable-next-line: forin
+    for (const key in overrides) {
+      switch (key) {
+        case "style":
+          initial.style = overrides.style
+            ? LogStyleHelper.Merge(initial.style, overrides.style)
+            : {};
+          break;
+        case "prefixValue":
+        case "postfixValue":
+          initial[key] = WonderHelper.create(overrides[key]);
+          break;
+        case "content":
+        case "formatters":
+          initial[key] = overrides[key] ?? [];
+          break;
+        case "defaultTrailingSeparator":
+          initial.defaultTrailingSeparator =
+            overrides.defaultTrailingSeparator ?? "";
+          break;
+        case "trailingSeparator":
+          initial.trailingSeparator = overrides.trailingSeparator;
+          break;
+      }
+    }
   }
 
   static cloneOptions(options: WonderOptions): WonderOptions {

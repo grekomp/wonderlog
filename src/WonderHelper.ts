@@ -93,23 +93,7 @@ export default class WonderHelper {
 
     // Apply changes
     if (options) {
-      if (options.style != null)
-        wonder.options.style = LogStyleHelper.Merge(
-          wonder.options.style,
-          options.style
-        );
-      if (options.content != null) wonder.options.content = options.content;
-      if (options.prefixValue != null)
-        wonder.options.prefixValue = WonderHelper.create(options.prefixValue);
-      if (options.postfixValue != null)
-        wonder.options.postfixValue = WonderHelper.create(options.postfixValue);
-      if (options.formatters != null)
-        wonder.options.formatters = options.formatters;
-      if (options.defaultTrailingSeparator != null)
-        wonder.options.defaultTrailingSeparator =
-          options.defaultTrailingSeparator;
-      if (options.trailingSeparator != null)
-        wonder.options.trailingSeparator = options.trailingSeparator;
+      WonderOptionsHelper.overrideOptions(wonder.options, options);
     }
 
     return wonder;
