@@ -89,15 +89,6 @@ export default class WonderHelper {
     );
   }
 
-  static clone(
-    cloneFrom: WonderImplementation | undefined
-  ): WonderImplementation | undefined {
-    return cloneFrom == null
-      ? undefined
-      : new WonderImplementation(
-          WonderOptionsHelper.cloneOptions(cloneFrom.options)
-        );
-  }
   static isWonder(obj: any): obj is Wonder {
     return (
       (typeof obj === "function" || typeof obj === "object") &&
