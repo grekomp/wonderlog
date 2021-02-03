@@ -170,22 +170,12 @@ export default class WonderHelper {
     const flattenedEntries: LogEntry[] = [];
 
     if (current.options.prefixValue) {
-      if (WonderHelper.isWonder(current.options.prefixValue)) {
-        flattenedEntries.push(
-          ...WonderHelper.Flatten(
-            current.options.prefixValue,
-            mergedParentWithoutFormatters
-          )
-        );
-      } else {
-        flattenedEntries.push(
-          WonderHelper.create(mergedParentWithoutFormatters, {
-            content: [current.options.prefixValue],
-            prefixValue: undefined,
-            postfixValue: undefined,
-          })
-        );
-      }
+      flattenedEntries.push(
+        ...WonderHelper.Flatten(
+          WonderHelper.newWonderInstance(current.options.prefixValue),
+          mergedParentWithoutFormatters
+        )
+      );
     }
 
     mergedParent.options.formatters.sort(
@@ -209,22 +199,12 @@ export default class WonderHelper {
     }
 
     if (current.options.postfixValue) {
-      if (WonderHelper.isWonder(current.options.postfixValue)) {
-        flattenedEntries.push(
-          ...WonderHelper.Flatten(
-            current.options.postfixValue,
-            mergedParentWithoutFormatters
-          )
-        );
-      } else {
-        flattenedEntries.push(
-          WonderHelper.create(mergedParentWithoutFormatters, {
-            content: [current.options.postfixValue],
-            prefixValue: undefined,
-            postfixValue: undefined,
-          })
-        );
-      }
+      flattenedEntries.push(
+        ...WonderHelper.Flatten(
+          WonderHelper.newWonderInstance(current.options.postfixValue),
+          mergedParentWithoutFormatters
+        )
+      );
     }
     return flattenedEntries;
   }

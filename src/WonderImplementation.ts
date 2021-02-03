@@ -193,11 +193,11 @@ export default class WonderImplementation {
               color: "#F28B54",
             },
             defaultTrailingSeparator: "",
-            prefixValue: WonderHelper.create(undefined, {
+            prefixValue: WonderOptionsHelper.create(undefined, {
               content: ['"'],
               trailingSeparator: "",
             }),
-            postfixValue: WonderHelper.create(undefined, {
+            postfixValue: WonderOptionsHelper.create(undefined, {
               content: ['"'],
             }),
           });
@@ -278,11 +278,11 @@ export default class WonderImplementation {
                     trailingSeparator: "",
                   }),
             ],
-            prefixValue: WonderHelper.create(undefined, {
+            prefixValue: WonderOptionsHelper.create(undefined, {
               content: ["["],
               trailingSeparator: "",
             }),
-            postfixValue: WonderHelper.create(undefined, {
+            postfixValue: WonderOptionsHelper.create(undefined, {
               content: ["]"],
             }),
           })

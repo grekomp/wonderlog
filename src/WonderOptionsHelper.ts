@@ -56,7 +56,7 @@ export default class WonderOptionsHelper {
           break;
         case "prefixValue":
         case "postfixValue":
-          initial[key] = WonderHelper.create(overrides[key]);
+          initial[key] = WonderOptionsHelper.create(overrides[key]);
           break;
         case "content":
         case "formatters":
@@ -77,11 +77,20 @@ export default class WonderOptionsHelper {
     return {
       style: options.style,
       content: [...options.content],
-      prefixValue: WonderHelper.create(options.prefixValue),
-      postfixValue: WonderHelper.create(options.postfixValue),
+      prefixValue: WonderOptionsHelper.create(options.prefixValue),
+      postfixValue: WonderOptionsHelper.create(options.postfixValue),
       defaultTrailingSeparator: options.defaultTrailingSeparator,
       trailingSeparator: options.trailingSeparator,
       formatters: [...options.formatters],
     };
+  }
+
+  static isWonderOptions(obj: any): obj is WonderOptions {
+    return (
+      typeof obj === "object" &&
+      "style" in obj &&
+      "content" in obj &&
+      "formatters" in obj
+    );
   }
 }
