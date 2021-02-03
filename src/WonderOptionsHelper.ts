@@ -1,5 +1,4 @@
 import LogStyleHelper from "./LogStyleHelper";
-import { Wonder } from "./Wonder";
 import WonderHelper from "./WonderHelper";
 import { WonderOptions } from "./WonderOptions";
 
@@ -19,10 +18,16 @@ export default class WonderOptionsHelper {
   static createOptions(
     cloneFrom?: WonderOptions,
     options?: Partial<WonderOptions>
-  ) {
+  ): WonderOptions {
     const newOptions = cloneFrom
       ? WonderOptionsHelper.cloneOptions(cloneFrom)
       : WonderOptionsHelper.defaultOptions();
+
+    if (options) {
+      WonderOptionsHelper.overrideOptions(newOptions, options);
+    }
+
+    return newOptions;
   }
   static mergeOptions(
     first: WonderOptions,

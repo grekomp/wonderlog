@@ -84,19 +84,9 @@ export default class WonderHelper {
     cloneFrom?: WonderImplementation,
     options?: Partial<WonderOptions>
   ): Wonder {
-    // Create a new wonder instance
-    const wonder = WonderHelper.newWonderInstance(
-      cloneFrom
-        ? WonderOptionsHelper.cloneOptions(cloneFrom.options)
-        : undefined
+    return WonderHelper.newWonderInstance(
+      WonderOptionsHelper.createOptions(cloneFrom?.options, options)
     );
-
-    // Apply changes
-    if (options) {
-      WonderOptionsHelper.overrideOptions(wonder.options, options);
-    }
-
-    return wonder;
   }
 
   static clone(
