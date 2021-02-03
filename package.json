@@ -8,8 +8,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:next": "prettier --write \"src/**/*.ts\" \"src/**/*.js\" --no-error-on-unmatched-pattern",
     "lint": "tslint -p tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch --runInBand",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint & npm run build",
@@ -61,6 +61,11 @@
     "testPathIgnorePatterns": [
       "/lib/",
       "/node_modules/"
-    ]
+    ],
+    "globals": {
+      "ts-jest": {
+        "isolatedModules": true
+      }
+    }
   }
 }
