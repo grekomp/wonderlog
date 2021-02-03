@@ -5,13 +5,14 @@ import { LogStyle } from "./LogStyle";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
 import { WonderOptions } from "./WonderOptions";
+import WonderOptionsHelper from "./WonderOptionsHelper";
 
 export default class WonderImplementation {
   options: WonderOptions;
 
   constructor(options?: WonderOptions) {
     this.options = Object.assign(
-      WonderHelper.newWonderOptions(),
+      WonderOptionsHelper.newWonderOptions(),
       options ?? {}
     );
   }

@@ -79,17 +79,6 @@ export default class WonderHelper {
 
     return wonderFunction;
   }
-  static newWonderOptions(): WonderOptions {
-    return {
-      style: {},
-      content: [],
-      prefixValue: undefined,
-      postfixValue: undefined,
-      defaultTrailingSeparator: " ",
-      trailingSeparator: undefined,
-      formatters: [],
-    };
-  }
 
   static create(
     cloneFrom?: WonderImplementation,
@@ -125,14 +114,6 @@ export default class WonderHelper {
 
     return wonder;
   }
-  static createOptions(
-    cloneFrom?: WonderOptions,
-    options?: Partial<WonderOptions>
-  ) {
-    const newOptions = cloneFrom
-      ? WonderOptionsHelper.cloneOptions(cloneFrom)
-      : WonderHelper.newWonderOptions();
-  }
 
   static clone(
     cloneFrom: WonderImplementation | undefined
@@ -156,23 +137,8 @@ export default class WonderHelper {
   ): Wonder {
     return WonderHelper.create(
       undefined,
-      WonderHelper.mergeOptions(first.options, second.options)
+      WonderOptionsHelper.mergeOptions(first.options, second.options)
     );
-  }
-  static mergeOptions(
-    first: WonderOptions,
-    second: WonderOptions
-  ): WonderOptions {
-    return {
-      style: LogStyleHelper.Merge(first.style, second.style),
-      content: [...first.content, ...second.content],
-      formatters: [...first.formatters, ...second.formatters],
-      prefixValue: second.prefixValue,
-      postfixValue: second.postfixValue,
-      defaultTrailingSeparator:
-        second.defaultTrailingSeparator ?? first.defaultTrailingSeparator,
-      trailingSeparator: second.trailingSeparator ?? first.trailingSeparator,
-    };
   }
 
   static GenerateLogElements(
