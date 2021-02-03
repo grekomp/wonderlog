@@ -114,7 +114,9 @@ export default class WonderHelper {
     const flattenedEntries: LogEntry = [];
     for (const entry of entries) {
       if (WonderHelper.isWonder(entry)) {
-        flattenedEntries.push(...WonderHelper.Flatten(entry, parent));
+        flattenedEntries.push(
+          ...WonderHelper.Flatten(entry.options, parent.options)
+        );
       } else {
         flattenedEntries.push(entry);
       }
@@ -159,33 +161,33 @@ export default class WonderHelper {
       : [...objects];
   }
 
-  static Flatten(
-    current: WonderImplementation,
-    parent: WonderImplementation
-  ): LogEntry[] {
-    const mergedParent = WonderHelper.merge(parent, current);
-    const mergedParentWithoutFormatters = WonderHelper.create(mergedParent, {
-      formatters: [],
-    });
+  static Flatten(current: WonderOptions, parent: WonderOptions): LogEntry[] {
+    const mergedParent = WonderOptionsHelper.merge(parent, current);
+    const mergedParentWithoutFormatters = WonderOptionsHelper.create(
+      mergedParent,
+      {
+        formatters: [],
+      }
+    );
     const flattenedEntries: LogEntry[] = [];
 
-    if (current.options.prefixValue) {
+    if (current.prefixValue) {
       flattenedEntries.push(
         ...WonderHelper.Flatten(
-          WonderHelper.newWonderInstance(current.options.prefixValue),
+          current.prefixValue,
           mergedParentWithoutFormatters
         )
       );
     }
 
-    mergedParent.options.formatters.sort(
+    mergedParent.formatters.sort(
       (a, b) => (a.priority || 0) - (b.priority || 0)
     );
 
-    for (const contentEntry of current.options.content) {
+    for (const contentEntry of current.content) {
       if (WonderHelper.isWonder(contentEntry)) {
         flattenedEntries.push(
-          ...WonderHelper.Flatten(contentEntry, mergedParent)
+          ...WonderHelper.Flatten(contentEntry.options, mergedParent)
         );
       } else {
         flattenedEntries.push(
@@ -198,10 +200,10 @@ export default class WonderHelper {
       }
     }
 
-    if (current.options.postfixValue) {
+    if (current.postfixValue) {
       flattenedEntries.push(
         ...WonderHelper.Flatten(
-          WonderHelper.newWonderInstance(current.options.postfixValue),
+          current.postfixValue,
           mergedParentWithoutFormatters
         )
       );
@@ -211,10 +213,10 @@ export default class WonderHelper {
 
   static GetFormattedEntry(
     entry: LogEntry,
-    mergedParent: Wonder,
-    mergedParentWithoutFormatters: Wonder
+    mergedParent: WonderOptions,
+    mergedParentWithoutFormatters: WonderOptions
   ): LogEntry[] {
-    for (const formatter of mergedParent.options.formatters) {
+    for (const formatter of mergedParent.formatters) {
       if (formatter.filter(entry, mergedParent)) {
         return WonderHelper.Flatten(
           formatter.format(entry, mergedParent),
@@ -225,11 +227,13 @@ export default class WonderHelper {
 
     // Default
     return [
-      WonderHelper.create(mergedParent, {
-        content: [entry],
-        prefixValue: undefined,
-        postfixValue: undefined,
-      }),
+      WonderHelper.newWonderInstance(
+        WonderOptionsHelper.create(mergedParent, {
+          content: [entry],
+          prefixValue: undefined,
+          postfixValue: undefined,
+        })
+      ),
     ];
   }
 }

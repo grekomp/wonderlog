@@ -3,13 +3,15 @@ import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
 import WonderImplementation from "./WonderImplementation";
 import { LogFormatter } from "./LogFormatter";
+import { WonderOptions } from "./WonderOptions";
+import WonderOptionsHelper from "./WonderOptionsHelper";
 
 export class NumberLogFormatter extends LogFormatter {
   numberFormat: Intl.NumberFormat;
 
   constructor(
-    filter?: (entry: LogEntry, parent: WonderImplementation) => boolean,
-    formatter?: (entry: LogEntry, parent: WonderImplementation) => Wonder,
+    filter?: (entry: LogEntry, parent: WonderOptions) => boolean,
+    formatter?: (entry: LogEntry, parent: WonderOptions) => WonderOptions,
     priority: number = 0,
     numberFormat?: Intl.NumberFormat,
     style?: LogStyle
@@ -18,12 +20,12 @@ export class NumberLogFormatter extends LogFormatter {
       filter || ((entry) => typeof entry === "number"),
       formatter ||
         ((entry, parent) =>
-          WonderHelper.create(undefined, {
+          WonderOptionsHelper.create(undefined, {
             content: [this.numberFormat.format(entry)],
             style: style || {
               color: "#9980FF",
             },
-            trailingSeparator: parent.options.trailingSeparator,
+            trailingSeparator: parent.trailingSeparator,
           })),
       priority
     );

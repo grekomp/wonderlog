@@ -186,8 +186,8 @@ export default class WonderImplementation {
     return this.format(
       new LogFormatter(
         (entry) => typeof entry === "string",
-        (entry, parent) => {
-          return WonderHelper.create(undefined, {
+        (entry) => {
+          return WonderOptionsHelper.create(undefined, {
             content: [entry],
             style: {
               color: "#F28B54",
@@ -231,7 +231,7 @@ export default class WonderImplementation {
       new LogFormatter(
         (entry) => typeof entry === "object",
         (entry) =>
-          WonderHelper.create(undefined, {
+          WonderOptionsHelper.create(undefined, {
             content: [JSON.stringify(entry)],
           }),
         10
@@ -243,7 +243,7 @@ export default class WonderImplementation {
       new LogFormatter(
         (entry) => typeof entry === "object",
         (entry) =>
-          WonderHelper.create(undefined, {
+          WonderOptionsHelper.create(undefined, {
             content: [JSON.stringify(entry, null, 2)],
           }),
         10
@@ -255,7 +255,7 @@ export default class WonderImplementation {
       new LogFormatter(
         (entry) => Array.isArray(entry),
         (entry, parent) =>
-          WonderHelper.create(parent, {
+          WonderOptionsHelper.create(parent, {
             content: [
               ...entry.slice(0, -1).map((el: Wonder) =>
                 WonderHelper.isWonder(el)
@@ -264,7 +264,7 @@ export default class WonderImplementation {
                     })
                   : WonderHelper.create(undefined, {
                       content: [el],
-                      formatters: [...parent.options.formatters],
+                      formatters: [...parent.formatters],
                       trailingSeparator: ", ",
                     })
               ),
@@ -274,7 +274,7 @@ export default class WonderImplementation {
                   })
                 : WonderHelper.create(undefined, {
                     content: [entry[entry.length - 1]],
-                    formatters: [...parent.options.formatters],
+                    formatters: [...parent.formatters],
                     trailingSeparator: "",
                   }),
             ],
