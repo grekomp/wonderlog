@@ -4,6 +4,7 @@ import {
   definePropertyValue,
 } from "./typescriptHelpers/defineProperty";
 import { LogEntry, Wonder } from "./Wonder";
+import { LogEntryFlat, WonderEntryFlat } from "./WonderEntryFlat";
 import WonderImplementation from "./WonderImplementation";
 import { WonderOptions } from "./WonderOptions";
 import WonderOptionsHelper from "./WonderOptionsHelper";
@@ -96,6 +97,15 @@ export default class WonderHelper {
       "options" in obj
     );
   }
+  static isWonderEntryFlat(obj: any): obj is WonderEntryFlat {
+    return (
+      typeof obj === "object" &&
+      "content" in obj &&
+      "style" in obj &&
+      "trailingSeparator" in obj
+    );
+  }
+
   static merge(
     first: WonderImplementation,
     second: WonderImplementation
@@ -125,7 +135,8 @@ export default class WonderHelper {
     // Find index of last wonder-type entry
     let lastWonderIndex = flattenedEntries.length - 1;
     for (; lastWonderIndex >= 0; lastWonderIndex--) {
-      if (WonderHelper.isWonder(flattenedEntries[lastWonderIndex])) break;
+      if (WonderHelper.isWonderEntryFlat(flattenedEntries[lastWonderIndex]))
+        break;
     }
 
     const strings: string[] = [];
@@ -133,21 +144,15 @@ export default class WonderHelper {
     const objects: any[] = [];
     for (let i = 0; i < flattenedEntries.length; i++) {
       if (i <= lastWonderIndex) {
-        if (WonderHelper.isWonder(flattenedEntries[i])) {
-          const entry = flattenedEntries[i] as WonderImplementation;
-          if (entry.options.content) {
-            strings.push(
-              "%c" +
-                entry.options.content[0] +
-                (i < lastWonderIndex
-                  ? "%c" +
-                    (entry.options.trailingSeparator ??
-                      entry.options.defaultTrailingSeparator)
-                  : "")
-            );
-            styles.push(LogStyleHelper.GetCss(entry.options.style));
-            if (i < lastWonderIndex) styles.push("");
-          }
+        if (WonderHelper.isWonderEntryFlat(flattenedEntries[i])) {
+          const entry = flattenedEntries[i] as WonderEntryFlat;
+          strings.push(
+            "%c" +
+              entry.content[0] +
+              (i < lastWonderIndex ? "%c" + entry.trailingSeparator : "")
+          );
+          styles.push(LogStyleHelper.GetCss(entry.style));
+          if (i < lastWonderIndex) styles.push("");
         } else {
           strings.push("%c" + flattenedEntries[i] + "%c ");
           styles.push("", "");
@@ -163,7 +168,10 @@ export default class WonderHelper {
       : [...objects];
   }
 
-  static Flatten(current: WonderOptions, parent: WonderOptions): LogEntry[] {
+  static Flatten(
+    current: WonderOptions,
+    parent: WonderOptions
+  ): WonderEntryFlat[] {
     const mergedParent = WonderOptionsHelper.merge(parent, current);
     const mergedParentWithoutFormatters = WonderOptionsHelper.create(
       mergedParent,
@@ -171,15 +179,17 @@ export default class WonderHelper {
         formatters: [],
       }
     );
-    const flattenedEntries: LogEntry[] = [];
+    const flattenedEntries: WonderEntryFlat[] = [];
 
     if (current.prefixValue) {
-      flattenedEntries.push(
-        ...WonderHelper.Flatten(
-          current.prefixValue,
-          mergedParentWithoutFormatters
-        )
+      const prefixEntries = WonderHelper.Flatten(
+        current.prefixValue,
+        mergedParentWithoutFormatters
       );
+      if (prefixEntries.length > 0)
+        prefixEntries[prefixEntries.length - 1].trailingSeparator =
+          current.trailingSeparator ?? current.defaultTrailingSeparator ?? "";
+      flattenedEntries.push(...prefixEntries);
     }
 
     if (current.content) {
@@ -205,12 +215,16 @@ export default class WonderHelper {
     }
 
     if (current.postfixValue) {
-      flattenedEntries.push(
-        ...WonderHelper.Flatten(
-          current.postfixValue,
-          mergedParentWithoutFormatters
-        )
+      const postfixEntries = WonderHelper.Flatten(
+        current.postfixValue,
+        mergedParentWithoutFormatters
       );
+
+      if (postfixEntries.length > 0)
+        postfixEntries[postfixEntries.length - 1].trailingSeparator =
+          current.trailingSeparator ?? current.defaultTrailingSeparator ?? "";
+
+      flattenedEntries.push(...postfixEntries);
     }
     return flattenedEntries;
   }
@@ -219,7 +233,7 @@ export default class WonderHelper {
     entry: LogEntry,
     mergedParent: WonderOptions,
     mergedParentWithoutFormatters: WonderOptions
-  ): LogEntry[] {
+  ): WonderEntryFlat[] {
     if (mergedParent.formatters) {
       for (const formatter of mergedParent.formatters) {
         if (formatter.filter(entry, mergedParent)) {
@@ -233,13 +247,14 @@ export default class WonderHelper {
 
     // Default
     return [
-      WonderHelper.newWonderInstance(
-        WonderOptionsHelper.create(mergedParent, {
-          content: [entry],
-          prefixValue: undefined,
-          postfixValue: undefined,
-        })
-      ),
+      {
+        content: [entry],
+        style: mergedParent.style ?? {},
+        trailingSeparator:
+          mergedParent.trailingSeparator ??
+          mergedParent.defaultTrailingSeparator ??
+          "",
+      },
     ];
   }
 }
