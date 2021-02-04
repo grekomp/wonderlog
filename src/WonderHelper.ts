@@ -82,7 +82,7 @@ export default class WonderHelper {
 
   static create(
     cloneFrom?: WonderImplementation,
-    options?: Partial<WonderOptions>
+    options?: WonderOptions
   ): Wonder {
     return WonderHelper.newWonderInstance(
       WonderOptionsHelper.create(cloneFrom?.options, options)
@@ -135,17 +135,19 @@ export default class WonderHelper {
       if (i <= lastWonderIndex) {
         if (WonderHelper.isWonder(flattenedEntries[i])) {
           const entry = flattenedEntries[i] as WonderImplementation;
-          strings.push(
-            "%c" +
-              entry.options.content[0] +
-              (i < lastWonderIndex
-                ? "%c" +
-                  (entry.options.trailingSeparator ??
-                    entry.options.defaultTrailingSeparator)
-                : "")
-          );
-          styles.push(LogStyleHelper.GetCss(entry.options.style));
-          if (i < lastWonderIndex) styles.push("");
+          if (entry.options.content) {
+            strings.push(
+              "%c" +
+                entry.options.content[0] +
+                (i < lastWonderIndex
+                  ? "%c" +
+                    (entry.options.trailingSeparator ??
+                      entry.options.defaultTrailingSeparator)
+                  : "")
+            );
+            styles.push(LogStyleHelper.GetCss(entry.options.style));
+            if (i < lastWonderIndex) styles.push("");
+          }
         } else {
           strings.push("%c" + flattenedEntries[i] + "%c ");
           styles.push("", "");
@@ -180,23 +182,25 @@ export default class WonderHelper {
       );
     }
 
-    mergedParent.formatters.sort(
-      (a, b) => (a.priority || 0) - (b.priority || 0)
-    );
+    if (current.content) {
+      mergedParent.formatters?.sort(
+        (a, b) => (a.priority || 0) - (b.priority || 0)
+      );
 
-    for (const contentEntry of current.content) {
-      if (WonderHelper.isWonder(contentEntry)) {
-        flattenedEntries.push(
-          ...WonderHelper.Flatten(contentEntry.options, mergedParent)
-        );
-      } else {
-        flattenedEntries.push(
-          ...WonderHelper.GetFormattedEntry(
-            contentEntry,
-            mergedParent,
-            mergedParentWithoutFormatters
-          )
-        );
+      for (const contentEntry of current.content) {
+        if (WonderHelper.isWonder(contentEntry)) {
+          flattenedEntries.push(
+            ...WonderHelper.Flatten(contentEntry.options, mergedParent)
+          );
+        } else {
+          flattenedEntries.push(
+            ...WonderHelper.GetFormattedEntry(
+              contentEntry,
+              mergedParent,
+              mergedParentWithoutFormatters
+            )
+          );
+        }
       }
     }
 
@@ -216,12 +220,14 @@ export default class WonderHelper {
     mergedParent: WonderOptions,
     mergedParentWithoutFormatters: WonderOptions
   ): LogEntry[] {
-    for (const formatter of mergedParent.formatters) {
-      if (formatter.filter(entry, mergedParent)) {
-        return WonderHelper.Flatten(
-          formatter.format(entry, mergedParent),
-          mergedParentWithoutFormatters
-        );
+    if (mergedParent.formatters) {
+      for (const formatter of mergedParent.formatters) {
+        if (formatter.filter(entry, mergedParent)) {
+          return WonderHelper.Flatten(
+            formatter.format(entry, mergedParent),
+            mergedParentWithoutFormatters
+          );
+        }
       }
     }
 

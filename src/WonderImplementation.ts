@@ -11,7 +11,7 @@ export default class WonderImplementation {
   options: WonderOptions;
 
   constructor(options?: WonderOptions) {
-    this.options = Object.assign(WonderOptionsHelper.default(), options ?? {});
+    this.options = Object.assign(WonderOptionsHelper.default(), options);
   }
 
   toString(): string {
@@ -179,7 +179,9 @@ export default class WonderImplementation {
    */
   format(...formatters: LogFormatter[]): Wonder {
     return WonderHelper.create(this, {
-      formatters: [...this.options.formatters, ...formatters],
+      formatters: this.options.formatters
+        ? [...this.options.formatters, ...formatters]
+        : formatters,
     });
   }
   get formatStringAsLiteral(): Wonder {
@@ -264,7 +266,7 @@ export default class WonderImplementation {
                     })
                   : WonderHelper.create(undefined, {
                       content: [el],
-                      formatters: [...parent.formatters],
+                      formatters: [...(parent.formatters ?? [])],
                       trailingSeparator: ", ",
                     })
               ),
@@ -274,7 +276,7 @@ export default class WonderImplementation {
                   })
                 : WonderHelper.create(undefined, {
                     content: [entry[entry.length - 1]],
-                    formatters: [...parent.formatters],
+                    formatters: [...(parent.formatters ?? [])],
                     trailingSeparator: "",
                   }),
             ],

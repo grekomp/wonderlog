@@ -1,4 +1,5 @@
 import LogStyleHelper from "./LogStyleHelper";
+import { Wonder } from "./Wonder";
 import WonderHelper from "./WonderHelper";
 import { WonderOptions } from "./WonderOptions";
 
@@ -17,7 +18,7 @@ export default class WonderOptionsHelper {
 
   static create(
     cloneFrom?: WonderOptions,
-    options?: Partial<WonderOptions>
+    options?: WonderOptions
   ): WonderOptions {
     const newOptions = cloneFrom
       ? WonderOptionsHelper.clone(cloneFrom)
@@ -32,8 +33,8 @@ export default class WonderOptionsHelper {
   static merge(first: WonderOptions, second: WonderOptions): WonderOptions {
     return {
       style: LogStyleHelper.Merge(first.style, second.style),
-      content: [...first.content, ...second.content],
-      formatters: [...first.formatters, ...second.formatters],
+      content: [...(first.content ?? []), ...(second.content ?? [])],
+      formatters: [...(first.formatters ?? []), ...(second.formatters ?? [])],
       prefixValue: second.prefixValue,
       postfixValue: second.postfixValue,
       defaultTrailingSeparator:
@@ -42,10 +43,7 @@ export default class WonderOptionsHelper {
     };
   }
 
-  static overwrite(
-    initial: WonderOptions,
-    overrides: Partial<WonderOptions>
-  ): void {
+  static overwrite(initial: WonderOptions, overrides: WonderOptions): void {
     // tslint:disable-next-line: forin
     for (const key in overrides) {
       switch (key) {
@@ -74,15 +72,33 @@ export default class WonderOptionsHelper {
   }
 
   static clone(options: WonderOptions): WonderOptions {
-    return {
-      style: options.style,
-      content: [...options.content],
-      prefixValue: WonderOptionsHelper.create(options.prefixValue),
-      postfixValue: WonderOptionsHelper.create(options.postfixValue),
-      defaultTrailingSeparator: options.defaultTrailingSeparator,
-      trailingSeparator: options.trailingSeparator,
-      formatters: [...options.formatters],
-    };
+    const clonedOptions: WonderOptions = {};
+
+    // tslint:disable-next-line: forin
+    for (const key in options) {
+      switch (key) {
+        case "style":
+          clonedOptions.style = LogStyleHelper.Clone(options.style);
+          break;
+        case "prefixValue":
+        case "postfixValue":
+          clonedOptions[key] = WonderOptionsHelper.create(options[key]);
+          break;
+        case "content":
+        case "formatters":
+          clonedOptions[key] = options[key]?.slice();
+          break;
+        case "defaultTrailingSeparator":
+          clonedOptions.defaultTrailingSeparator =
+            options.defaultTrailingSeparator;
+          break;
+        case "trailingSeparator":
+          clonedOptions.trailingSeparator = options.trailingSeparator;
+          break;
+      }
+    }
+
+    return clonedOptions;
   }
 
   static isWonderOptions(obj: any): obj is WonderOptions {
