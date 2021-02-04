@@ -56,7 +56,7 @@ export default class WonderImplementation {
 
   separator(separatorString: string): Wonder {
     return WonderHelper.create(this, {
-      trailingSeparator: separatorString,
+      innerSeparator: separatorString,
     });
   }
   get noSeparator(): Wonder {
@@ -194,10 +194,8 @@ export default class WonderImplementation {
             style: {
               color: "#F28B54",
             },
-            defaultTrailingSeparator: "",
             prefixValue: WonderOptionsHelper.create(undefined, {
               content: ['"'],
-              trailingSeparator: "",
             }),
             postfixValue: WonderOptionsHelper.create(undefined, {
               content: ['"'],
@@ -256,37 +254,16 @@ export default class WonderImplementation {
     return this.format(
       new LogFormatter(
         (entry) => Array.isArray(entry),
-        (entry, parent) =>
+        (entry: any[], parent) =>
           WonderOptionsHelper.create(parent, {
-            content: [
-              ...entry.slice(0, -1).map((el: Wonder) =>
-                WonderHelper.isWonder(el)
-                  ? WonderHelper.create(el, {
-                      trailingSeparator: ", ",
-                    })
-                  : WonderHelper.create(undefined, {
-                      content: [el],
-                      formatters: [...(parent.formatters ?? [])],
-                      trailingSeparator: ", ",
-                    })
-              ),
-              WonderHelper.isWonder(entry[entry.length - 1])
-                ? WonderHelper.create(entry[entry.length - 1], {
-                    trailingSeparator: "",
-                  })
-                : WonderHelper.create(undefined, {
-                    content: [entry[entry.length - 1]],
-                    formatters: [...(parent.formatters ?? [])],
-                    trailingSeparator: "",
-                  }),
-            ],
-            prefixValue: WonderOptionsHelper.create(undefined, {
+            content: [entry],
+            innerSeparator: ", ",
+            prefixValue: {
               content: ["["],
-              trailingSeparator: "",
-            }),
-            postfixValue: WonderOptionsHelper.create(undefined, {
+            },
+            postfixValue: {
               content: ["]"],
-            }),
+            },
           })
       )
     );

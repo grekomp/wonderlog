@@ -25,7 +25,6 @@ export class NumberLogFormatter extends LogFormatter {
             style: style || {
               color: "#9980FF",
             },
-            trailingSeparator: parent.trailingSeparator,
           })),
       priority
     );

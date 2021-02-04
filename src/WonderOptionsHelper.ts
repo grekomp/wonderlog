@@ -10,8 +10,9 @@ export default class WonderOptionsHelper {
       content: [],
       prefixValue: undefined,
       postfixValue: undefined,
-      defaultTrailingSeparator: " ",
-      trailingSeparator: undefined,
+      prefixSeparator: "",
+      innerSeparator: " ",
+      postfixSeparator: "",
       formatters: [],
     };
   }
@@ -37,9 +38,9 @@ export default class WonderOptionsHelper {
       formatters: [...(first.formatters ?? []), ...(second.formatters ?? [])],
       prefixValue: second.prefixValue,
       postfixValue: second.postfixValue,
-      defaultTrailingSeparator:
-        second.defaultTrailingSeparator ?? first.defaultTrailingSeparator,
-      trailingSeparator: second.trailingSeparator ?? first.trailingSeparator,
+      prefixSeparator: second.prefixSeparator ?? first.prefixSeparator,
+      innerSeparator: second.innerSeparator ?? first.innerSeparator,
+      postfixSeparator: second.postfixSeparator ?? first.postfixSeparator,
     };
   }
 
@@ -60,12 +61,10 @@ export default class WonderOptionsHelper {
         case "formatters":
           initial[key] = overrides[key] ?? [];
           break;
-        case "defaultTrailingSeparator":
-          initial.defaultTrailingSeparator =
-            overrides.defaultTrailingSeparator ?? "";
-          break;
-        case "trailingSeparator":
-          initial.trailingSeparator = overrides.trailingSeparator;
+        case "prefixSeparator":
+        case "innerSeparator":
+        case "postfixSeparator":
+          initial[key] = overrides[key] ?? "";
           break;
       }
     }
@@ -88,12 +87,10 @@ export default class WonderOptionsHelper {
         case "formatters":
           clonedOptions[key] = options[key]?.slice();
           break;
-        case "defaultTrailingSeparator":
-          clonedOptions.defaultTrailingSeparator =
-            options.defaultTrailingSeparator;
-          break;
-        case "trailingSeparator":
-          clonedOptions.trailingSeparator = options.trailingSeparator;
+        case "prefixSeparator":
+        case "innerSeparator":
+        case "postfixSeparator":
+          clonedOptions[key] = options[key] ?? "";
           break;
       }
     }

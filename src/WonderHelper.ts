@@ -181,14 +181,21 @@ export default class WonderHelper {
     );
     const flattenedEntries: WonderEntryFlat[] = [];
 
+    function setLastEntrySeparator(
+      entries: WonderEntryFlat[],
+      separator?: string
+    ) {
+      if (entries.length > 0)
+        entries[entries.length - 1].trailingSeparator = separator ?? "";
+    }
+
     if (current.prefixValue) {
       const prefixEntries = WonderHelper.Flatten(
         current.prefixValue,
         mergedParentWithoutFormatters
       );
-      if (prefixEntries.length > 0)
-        prefixEntries[prefixEntries.length - 1].trailingSeparator =
-          current.trailingSeparator ?? current.defaultTrailingSeparator ?? "";
+      setLastEntrySeparator(prefixEntries, mergedParent.prefixSeparator);
+
       flattenedEntries.push(...prefixEntries);
     }
 
@@ -211,21 +218,21 @@ export default class WonderHelper {
             )
           );
         }
+        setLastEntrySeparator(flattenedEntries, mergedParent.innerSeparator);
       }
     }
 
     if (current.postfixValue) {
+      setLastEntrySeparator(flattenedEntries, mergedParent.postfixSeparator);
+
       const postfixEntries = WonderHelper.Flatten(
         current.postfixValue,
         mergedParentWithoutFormatters
       );
 
-      if (postfixEntries.length > 0)
-        postfixEntries[postfixEntries.length - 1].trailingSeparator =
-          current.trailingSeparator ?? current.defaultTrailingSeparator ?? "";
-
       flattenedEntries.push(...postfixEntries);
     }
+
     return flattenedEntries;
   }
 
@@ -250,10 +257,7 @@ export default class WonderHelper {
       {
         content: [entry],
         style: mergedParent.style ?? {},
-        trailingSeparator:
-          mergedParent.trailingSeparator ??
-          mergedParent.defaultTrailingSeparator ??
-          "",
+        trailingSeparator: mergedParent.innerSeparator ?? "",
       },
     ];
   }

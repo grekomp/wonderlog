@@ -7,7 +7,8 @@ export type WonderOptions = {
   content?: LogEntry[];
   prefixValue?: WonderOptions;
   postfixValue?: WonderOptions;
-  defaultTrailingSeparator?: string;
-  trailingSeparator?: string;
+  prefixSeparator?: string;
+  innerSeparator?: string;
+  postfixSeparator?: string;
   formatters?: LogFormatter[];
 };
