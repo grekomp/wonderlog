@@ -17,7 +17,7 @@ const wonderTestCases: WonderTestCase[] = [
   },
   {
     elements: ["hello", wonder.red("world")],
-    expected: ["%chello%c %cworld", "", "", "color: red"],
+    expected: ["%chello%c %cworld", "", "", "color: hsl(348, 86%, 61%)"],
   },
   {
     elements: ["hello", wonder.red("world", wonder.blue("blue"))],
@@ -25,9 +25,9 @@ const wonderTestCases: WonderTestCase[] = [
       "%chello%c %cworld%c %cblue",
       "",
       "",
-      "color: red",
+      "color: hsl(348, 86%, 61%)",
       "",
-      "color: blue",
+      "color: hsl(217, 71%,  53%)",
     ],
   },
   {

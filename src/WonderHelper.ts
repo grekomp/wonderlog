@@ -41,21 +41,39 @@ export default class WonderHelper {
     definePropertyGetter(wonderFunction, "noSeparator", wonder);
 
     definePropertyValue(wonderFunction, "color", wonder);
-    definePropertyGetter(wonderFunction, "red", wonder);
+    definePropertyGetter(wonderFunction, "orange", wonder);
+    definePropertyGetter(wonderFunction, "yellow", wonder);
+    definePropertyGetter(wonderFunction, "green", wonder);
+    definePropertyGetter(wonderFunction, "turquoise", wonder);
+    definePropertyGetter(wonderFunction, "cyan", wonder);
     definePropertyGetter(wonderFunction, "blue", wonder);
+    definePropertyGetter(wonderFunction, "purple", wonder);
+    definePropertyGetter(wonderFunction, "red", wonder);
     definePropertyGetter(wonderFunction, "black", wonder);
     definePropertyGetter(wonderFunction, "white", wonder);
-    definePropertyGetter(wonderFunction, "purple", wonder);
 
     definePropertyValue(wonderFunction, "bg", wonder);
+    definePropertyGetter(wonderFunction, "bgOrange", wonder);
+    definePropertyGetter(wonderFunction, "bgYellow", wonder);
+    definePropertyGetter(wonderFunction, "bgGreen", wonder);
+    definePropertyGetter(wonderFunction, "bgTurquoise", wonder);
+    definePropertyGetter(wonderFunction, "bgCyan", wonder);
+    definePropertyGetter(wonderFunction, "bgBlue", wonder);
+    definePropertyGetter(wonderFunction, "bgPurple", wonder);
     definePropertyGetter(wonderFunction, "bgRed", wonder);
     definePropertyGetter(wonderFunction, "bgBlack", wonder);
+    definePropertyGetter(wonderFunction, "bgWhite", wonder);
 
     definePropertyValue(wonderFunction, "fontWeight", wonder);
+    definePropertyGetter(wonderFunction, "normal", wonder);
     definePropertyGetter(wonderFunction, "bold", wonder);
+    definePropertyGetter(wonderFunction, "lighter", wonder);
+    definePropertyGetter(wonderFunction, "bolder", wonder);
 
     definePropertyValue(wonderFunction, "fontStyle", wonder);
     definePropertyGetter(wonderFunction, "italic", wonder);
+    definePropertyGetter(wonderFunction, "fontStyleItalic", wonder);
+    definePropertyGetter(wonderFunction, "fontStyleNormal", wonder);
 
     definePropertyValue(wonderFunction, "padding", wonder);
     definePropertyValue(wonderFunction, "border", wonder);

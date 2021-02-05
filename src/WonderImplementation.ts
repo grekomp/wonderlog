@@ -7,6 +7,19 @@ import { LogEntry, Wonder } from "./Wonder";
 import { WonderOptions } from "./WonderOptions";
 import WonderOptionsHelper from "./WonderOptionsHelper";
 
+const colors = {
+  orange: "hsl(14,  100%, 53%)",
+  yellow: "hsl(48,  100%, 67%)",
+  green: "hsl(141, 53%,  53%)",
+  turquoise: "hsl(171, 100%, 41%)",
+  cyan: "hsl(204, 71%,  53%)",
+  blue: "hsl(217, 71%,  53%)",
+  purple: "hsl(271, 100%, 71%)",
+  red: "hsl(348, 86%, 61%)",
+  black: "black",
+  white: "white",
+};
+
 export default class WonderImplementation {
   options: WonderOptions;
 
@@ -70,19 +83,34 @@ export default class WonderImplementation {
     });
   }
   get red(): Wonder {
-    return this.color("red");
+    return this.color(colors.red);
+  }
+  get green(): Wonder {
+    return this.color(colors.green);
   }
   get blue(): Wonder {
-    return this.color("blue");
+    return this.color(colors.blue);
   }
-  get black(): Wonder {
-    return this.color("black");
+  get orange(): Wonder {
+    return this.color(colors.orange);
   }
-  get white(): Wonder {
-    return this.color("white");
+  get yellow(): Wonder {
+    return this.color(colors.yellow);
+  }
+  get turquoise(): Wonder {
+    return this.color(colors.turquoise);
+  }
+  get cyan(): Wonder {
+    return this.color(colors.cyan);
   }
   get purple(): Wonder {
-    return this.color("MediumPurple");
+    return this.color(colors.purple);
+  }
+  get black(): Wonder {
+    return this.color(colors.black);
+  }
+  get white(): Wonder {
+    return this.color(colors.white);
   }
 
   bg(bgColor: string): Wonder {
@@ -90,11 +118,35 @@ export default class WonderImplementation {
       style: { background: bgColor },
     });
   }
-  get bgBlack(): Wonder {
-    return this.bg("black");
+  get bgOrange(): Wonder {
+    return this.bg(colors.orange);
+  }
+  get bgYellow(): Wonder {
+    return this.bg(colors.yellow);
+  }
+  get bgGreen(): Wonder {
+    return this.bg(colors.green);
+  }
+  get bgTurquoise(): Wonder {
+    return this.bg(colors.turquoise);
+  }
+  get bgCyan(): Wonder {
+    return this.bg(colors.cyan);
+  }
+  get bgBlue(): Wonder {
+    return this.bg(colors.blue);
+  }
+  get bgPurple(): Wonder {
+    return this.bg(colors.purple);
   }
   get bgRed(): Wonder {
-    return this.bg("red");
+    return this.bg(colors.red);
+  }
+  get bgBlack(): Wonder {
+    return this.bg(colors.black);
+  }
+  get bgWhite(): Wonder {
+    return this.bg(colors.white);
   }
 
   fontWeight(fontWeight?: string): Wonder {
@@ -102,8 +154,17 @@ export default class WonderImplementation {
       style: { font_weight: fontWeight },
     });
   }
+  get normal(): Wonder {
+    return this.fontWeight("normal");
+  }
   get bold(): Wonder {
     return this.fontWeight("bold");
+  }
+  get lighter(): Wonder {
+    return this.fontWeight("lighter");
+  }
+  get bolder(): Wonder {
+    return this.fontWeight("bolder");
   }
 
   fontStyle(fontStyle?: string): Wonder {
@@ -111,8 +172,17 @@ export default class WonderImplementation {
       style: { font_style: fontStyle },
     });
   }
+  /** An alias for `fontStyleItalic` */
   get italic(): Wonder {
+    return this.fontStyleItalic;
+  }
+  /** Sets the `font-style` css property to `italic` */
+  get fontStyleItalic(): Wonder {
     return this.fontStyle("italic");
+  }
+  /** Sets the `font-style` css property to `normal` */
+  get fontStyleNormal(): Wonder {
+    return this.fontStyle("normal");
   }
 
   padding(padding?: string): Wonder {
@@ -148,7 +218,7 @@ export default class WonderImplementation {
         padding: "0 4px",
         border_radius: "2px",
         background: "hsl(348, 100%, 61%)",
-        color: "white",
+        color: colors.white,
       },
     });
   }
@@ -166,7 +236,7 @@ export default class WonderImplementation {
       style: {
         padding: "0 4px",
         border_radius: "2px",
-        background: "hsl(48, 100%, 67%)",
+        background: colors.yellow,
         color: "rgba(0,0,0,.7)",
       },
     });
