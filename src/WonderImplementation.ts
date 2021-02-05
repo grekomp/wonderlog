@@ -256,7 +256,7 @@ export default class WonderImplementation {
         (entry) => Array.isArray(entry),
         (entry: any[], parent) =>
           WonderOptionsHelper.create(parent, {
-            content: [entry],
+            content: entry,
             innerSeparator: ", ",
             prefixValue: {
               content: ["["],

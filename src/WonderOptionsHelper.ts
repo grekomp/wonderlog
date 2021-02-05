@@ -21,9 +21,7 @@ export default class WonderOptionsHelper {
     cloneFrom?: WonderOptions,
     options?: WonderOptions
   ): WonderOptions {
-    const newOptions = cloneFrom
-      ? WonderOptionsHelper.clone(cloneFrom)
-      : WonderOptionsHelper.default();
+    const newOptions = cloneFrom ? WonderOptionsHelper.clone(cloneFrom) : {};
 
     if (options) {
       WonderOptionsHelper.overwrite(newOptions, options);
@@ -81,7 +79,8 @@ export default class WonderOptionsHelper {
           break;
         case "prefixValue":
         case "postfixValue":
-          clonedOptions[key] = WonderOptionsHelper.create(options[key]);
+          if (options[key])
+            clonedOptions[key] = WonderOptionsHelper.create(options[key]);
           break;
         case "content":
         case "formatters":

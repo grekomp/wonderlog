@@ -2,7 +2,7 @@ import { LogStyle } from "./LogStyle";
 import { LogEntry } from "./Wonder";
 
 export type WonderEntryFlat = {
-  content: LogEntry[];
+  content: LogEntry;
   style: LogStyle;
   trailingSeparator: string;
 };

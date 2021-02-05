@@ -120,22 +120,31 @@ export default class WonderHelper {
     parent: WonderImplementation,
     entries: LogEntry[]
   ): any[] {
-    // Flatten all entries
-    const flattenedEntries: LogEntry = [];
-    for (const entry of entries) {
-      if (WonderHelper.isWonder(entry)) {
-        flattenedEntries.push(
-          ...WonderHelper.Flatten(entry.options, parent.options)
-        );
-      } else {
-        flattenedEntries.push(entry);
-      }
+    // Find index of last wonder-type entry
+    let lastWonderIndex = entries.length - 1;
+    for (; lastWonderIndex >= 0; lastWonderIndex--) {
+      if (WonderHelper.isWonder(entries[lastWonderIndex])) break;
     }
 
+    // Flatten wonder-type entries
+    const flattenedEntries: LogEntry = [];
+    if (lastWonderIndex >= 0)
+      flattenedEntries.push(
+        ...WonderHelper.Flatten(
+          { content: entries.slice(0, lastWonderIndex + 1) },
+          parent.options
+        )
+      );
+    flattenedEntries.push(...entries.slice(lastWonderIndex + 1));
+
     // Find index of last wonder-type entry
-    let lastWonderIndex = flattenedEntries.length - 1;
-    for (; lastWonderIndex >= 0; lastWonderIndex--) {
-      if (WonderHelper.isWonderEntryFlat(flattenedEntries[lastWonderIndex]))
+    let lastFlattenedWonderIndex = flattenedEntries.length - 1;
+    for (; lastFlattenedWonderIndex >= 0; lastFlattenedWonderIndex--) {
+      if (
+        WonderHelper.isWonderEntryFlat(
+          flattenedEntries[lastFlattenedWonderIndex]
+        )
+      )
         break;
     }
 
@@ -143,16 +152,18 @@ export default class WonderHelper {
     const styles: string[] = [];
     const objects: any[] = [];
     for (let i = 0; i < flattenedEntries.length; i++) {
-      if (i <= lastWonderIndex) {
+      if (i <= lastFlattenedWonderIndex) {
         if (WonderHelper.isWonderEntryFlat(flattenedEntries[i])) {
           const entry = flattenedEntries[i] as WonderEntryFlat;
           strings.push(
             "%c" +
               entry.content[0] +
-              (i < lastWonderIndex ? "%c" + entry.trailingSeparator : "")
+              (i < lastFlattenedWonderIndex
+                ? "%c" + entry.trailingSeparator
+                : "")
           );
           styles.push(LogStyleHelper.GetCss(entry.style));
-          if (i < lastWonderIndex) styles.push("");
+          if (i < lastFlattenedWonderIndex) styles.push("");
         } else {
           strings.push("%c" + flattenedEntries[i] + "%c ");
           styles.push("", "");
