@@ -88,6 +88,53 @@ const wonderTestCases: WonderTestCase[] = [
       "",
     ],
   },
+  {
+    elements: [
+      wonder.noSeparator(
+        "one",
+        "two",
+        wonder.formatStringAsLiteral("three", "four"),
+        "five"
+      ),
+    ],
+    expected: [
+      '%cone%c%ctwo%c%c"%c%cthree%c%c"%c%c"%c%cfour%c%c"%c%cfive',
+      "",
+      "",
+      "",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "color: #F28B54",
+      "",
+      "",
+    ],
+  },
+  {
+    elements: [
+      wonder.noSeparator("one", "two", wonder("three", "four"), "five"),
+    ],
+    expected: [
+      "%cone%c%ctwo%c%cthree%c%cfour%c%cfive",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+    ],
+  },
 ];
 test.each(wonderTestCases)("Wonder styling test %#", (tc) => {
   const w = tc.wonderInstance ?? wonder;
@@ -95,8 +142,12 @@ test.each(wonderTestCases)("Wonder styling test %#", (tc) => {
 });
 
 test("Wonder options independence test", () => {
-  const preset1 = wonder.red;
-  const preset1Equivalent = wonder.red;
+  const preset1 = wonder.red.pre({ content: ["("] }).post({ content: [")"] })(
+    "content string"
+  );
+  const preset1Equivalent = wonder.red
+    .pre({ content: ["("] })
+    .post({ content: [")"] })("content string");
   const preset2 = preset1.bgBlack;
 
   expect(preset1.options.style?.background).toBeUndefined();
@@ -107,8 +158,8 @@ test("Wonder options independence test", () => {
 
   expect(preset1.options).not.toBe(preset2.options);
   expect(preset1.options.content).not.toBe(preset2.options.content);
-  expect(preset1.options.formatters).not.toBe(preset2.options.formatters);
-  // expect(preset1.options.prefixValue).not.toBe(preset2.options.prefixValue);
-  // expect(preset1.options.postfixValue).not.toBe(preset2.options.postfixValue);
+  // expect(preset1.options.formatters).not.toBe(preset2.options.formatters);
+  expect(preset1.options.prefixValue).not.toBe(preset2.options.prefixValue);
+  expect(preset1.options.postfixValue).not.toBe(preset2.options.postfixValue);
   expect(preset1.options.style).not.toBe(preset2.options.style);
 });

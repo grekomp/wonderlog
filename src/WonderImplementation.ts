@@ -24,7 +24,7 @@ export default class WonderImplementation {
   options: WonderOptions;
 
   constructor(options?: WonderOptions) {
-    this.options = Object.assign(WonderOptionsHelper.default(), options);
+    this.options = Object.assign({}, options);
   }
 
   toString(): string {
@@ -53,24 +53,29 @@ export default class WonderImplementation {
   groupEnd(): void {
     console.groupEnd();
   }
-
   //#endregion Logging methods
   //#region Setting content
   _apply(content: LogEntry[]): Wonder {
     return WonderHelper.create(this, { content });
   }
 
-  pre(prefix: LogEntry): Wonder {
-    throw new Error("Method not implemented.");
+  pre(prefixValue: WonderOptions): Wonder {
+    return WonderHelper.create(this, { prefixValue });
   }
-  post(postfix: LogEntry): Wonder {
-    throw new Error("Method not implemented.");
+  post(postfixValue: WonderOptions): Wonder {
+    return WonderHelper.create(this, { postfixValue });
   }
 
   separator(separatorString: string): Wonder {
     return WonderHelper.create(this, {
       innerSeparator: separatorString,
     });
+  }
+  preSeparator(prefixSeparator: string): Wonder {
+    return WonderHelper.create(this, { prefixSeparator });
+  }
+  postSeparator(postfixSeparator: string): Wonder {
+    return WonderHelper.create(this, { postfixSeparator });
   }
   get noSeparator(): Wonder {
     return this.separator("");

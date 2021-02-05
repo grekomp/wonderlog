@@ -38,6 +38,8 @@ export default class WonderHelper {
     definePropertyValue(wonderFunction, "pre", wonder);
     definePropertyValue(wonderFunction, "post", wonder);
     definePropertyValue(wonderFunction, "separator", wonder);
+    definePropertyValue(wonderFunction, "preSeparator", wonder);
+    definePropertyValue(wonderFunction, "postSeparator", wonder);
     definePropertyGetter(wonderFunction, "noSeparator", wonder);
 
     definePropertyValue(wonderFunction, "color", wonder);
@@ -145,47 +147,34 @@ export default class WonderHelper {
     }
 
     // Flatten wonder-type entries
+    const mergedParent = WonderOptionsHelper.create(
+      WonderOptionsHelper.default(),
+      parent.options
+    );
     const flattenedEntries: LogEntry = [];
     if (lastWonderIndex >= 0)
       flattenedEntries.push(
         ...WonderHelper.Flatten(
           { content: entries.slice(0, lastWonderIndex + 1) },
-          parent.options
+          mergedParent
         )
       );
+    const lastFlattenedWonderIndex = flattenedEntries.length - 1;
     flattenedEntries.push(...entries.slice(lastWonderIndex + 1));
-
-    // Find index of last wonder-type entry
-    let lastFlattenedWonderIndex = flattenedEntries.length - 1;
-    for (; lastFlattenedWonderIndex >= 0; lastFlattenedWonderIndex--) {
-      if (
-        WonderHelper.isWonderEntryFlat(
-          flattenedEntries[lastFlattenedWonderIndex]
-        )
-      )
-        break;
-    }
 
     const strings: string[] = [];
     const styles: string[] = [];
     const objects: any[] = [];
     for (let i = 0; i < flattenedEntries.length; i++) {
       if (i <= lastFlattenedWonderIndex) {
-        if (WonderHelper.isWonderEntryFlat(flattenedEntries[i])) {
-          const entry = flattenedEntries[i] as WonderEntryFlat;
-          strings.push(
-            "%c" +
-              entry.content[0] +
-              (i < lastFlattenedWonderIndex
-                ? "%c" + entry.trailingSeparator
-                : "")
-          );
-          styles.push(LogStyleHelper.GetCss(entry.style));
-          if (i < lastFlattenedWonderIndex) styles.push("");
-        } else {
-          strings.push("%c" + flattenedEntries[i] + "%c ");
-          styles.push("", "");
-        }
+        const entry = flattenedEntries[i] as WonderEntryFlat;
+        strings.push(
+          "%c" +
+            entry.content[0] +
+            (i < lastFlattenedWonderIndex ? "%c" + entry.trailingSeparator : "")
+        );
+        styles.push(LogStyleHelper.GetCss(entry.style));
+        if (i < lastFlattenedWonderIndex) styles.push("");
       } else {
         objects.push(flattenedEntries[i]);
       }
