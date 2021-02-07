@@ -59,10 +59,22 @@ export default class WonderImplementation {
     return WonderHelper.create(this, { content });
   }
 
-  pre(prefixValue: WonderOptions): Wonder {
+  pre(prefixValue: WonderOptions | string): Wonder {
+    if (typeof prefixValue === "string") {
+      return WonderHelper.create(this, {
+        prefixValue: { content: [prefixValue] },
+      });
+    }
+
     return WonderHelper.create(this, { prefixValue });
   }
-  post(postfixValue: WonderOptions): Wonder {
+  post(postfixValue: WonderOptions | string): Wonder {
+    if (typeof postfixValue === "string") {
+      return WonderHelper.create(this, {
+        postfixValue: { content: [postfixValue] },
+      });
+    }
+
     return WonderHelper.create(this, { postfixValue });
   }
 

@@ -135,6 +135,10 @@ const wonderTestCases: WonderTestCase[] = [
       "",
     ],
   },
+  {
+    elements: [wonder.pre("<").post(">")("inner text")],
+    expected: ["%c<%c%cinner text%c%c>", "", "", "", "", ""],
+  },
 ];
 test.each(wonderTestCases)("Wonder styling test %#", (tc) => {
   const w = tc.wonderInstance ?? wonder;
