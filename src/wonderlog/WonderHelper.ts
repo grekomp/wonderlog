@@ -9,8 +9,8 @@ import WonderImplementation from "./WonderImplementation";
 import { WonderOptions } from "./WonderOptions";
 import WonderOptionsHelper from "./WonderOptionsHelper";
 
-export default class WonderHelper {
-  static newWonderInstance(options?: WonderOptions): Wonder {
+const WonderHelper = {
+  newWonderInstance(options?: WonderOptions): Wonder {
     const wonder = new WonderImplementation(options);
 
     // Create the wonder function
@@ -99,44 +99,38 @@ export default class WonderHelper {
     );
 
     return wonderFunction;
-  }
+  },
 
-  static create(
-    cloneFrom?: WonderImplementation,
-    options?: WonderOptions
-  ): Wonder {
+  create(cloneFrom?: WonderImplementation, options?: WonderOptions): Wonder {
     return WonderHelper.newWonderInstance(
       WonderOptionsHelper.create(cloneFrom?.options, options)
     );
-  }
+  },
 
-  static isWonder(obj: any): obj is Wonder {
+  isWonder(obj: any): obj is Wonder {
     return (
       (typeof obj === "function" || typeof obj === "object") &&
       "_apply" in obj &&
       "options" in obj
     );
-  }
-  static isWonderEntryFlat(obj: any): obj is WonderEntryFlat {
+  },
+  isWonderEntryFlat(obj: any): obj is WonderEntryFlat {
     return (
       typeof obj === "object" &&
       "content" in obj &&
       "style" in obj &&
       "trailingSeparator" in obj
     );
-  }
+  },
 
-  static merge(
-    first: WonderImplementation,
-    second: WonderImplementation
-  ): Wonder {
+  merge(first: WonderImplementation, second: WonderImplementation): Wonder {
     return WonderHelper.create(
       undefined,
       WonderOptionsHelper.merge(first.options, second.options)
     );
-  }
+  },
 
-  static GenerateLogElements(
+  GenerateLogElements(
     parent: WonderImplementation,
     entries: LogEntry[]
   ): any[] {
@@ -184,12 +178,9 @@ export default class WonderHelper {
     return joinedStrings
       ? [joinedStrings, ...styles, ...objects]
       : [...objects];
-  }
+  },
 
-  static Flatten(
-    current: WonderOptions,
-    parent: WonderOptions
-  ): WonderEntryFlat[] {
+  Flatten(current: WonderOptions, parent: WonderOptions): WonderEntryFlat[] {
     const mergedParent = WonderOptionsHelper.merge(parent, current);
     const mergedParentWithoutFormatters = WonderOptionsHelper.create(
       mergedParent,
@@ -252,9 +243,9 @@ export default class WonderHelper {
     }
 
     return flattenedEntries;
-  }
+  },
 
-  static GetFormattedEntry(
+  GetFormattedEntry(
     entry: LogEntry,
     mergedParent: WonderOptions,
     mergedParentWithoutFormatters: WonderOptions
@@ -278,5 +269,6 @@ export default class WonderHelper {
         trailingSeparator: mergedParent.innerSeparator ?? "",
       },
     ];
-  }
-}
+  },
+};
+export default WonderHelper;
