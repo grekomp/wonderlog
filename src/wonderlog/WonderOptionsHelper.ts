@@ -3,8 +3,8 @@ import { Wonder } from "./Wonder";
 import WonderHelper from "./WonderHelper";
 import { WonderOptions } from "./WonderOptions";
 
-export default class WonderOptionsHelper {
-  static default(): WonderOptions {
+const WonderOptionsHelper = {
+  default(): WonderOptions {
     return {
       style: {},
       content: [],
@@ -15,12 +15,9 @@ export default class WonderOptionsHelper {
       postfixSeparator: "",
       formatters: [],
     };
-  }
+  },
 
-  static create(
-    cloneFrom?: WonderOptions,
-    options?: WonderOptions
-  ): WonderOptions {
+  create(cloneFrom?: WonderOptions, options?: WonderOptions): WonderOptions {
     const newOptions = cloneFrom ? WonderOptionsHelper.clone(cloneFrom) : {};
 
     if (options) {
@@ -28,8 +25,8 @@ export default class WonderOptionsHelper {
     }
 
     return newOptions;
-  }
-  static merge(first: WonderOptions, second: WonderOptions): WonderOptions {
+  },
+  merge(first: WonderOptions, second: WonderOptions): WonderOptions {
     return {
       style: LogStyleHelper.Merge(first.style, second.style),
       content: [...(first.content ?? []), ...(second.content ?? [])],
@@ -40,9 +37,9 @@ export default class WonderOptionsHelper {
       innerSeparator: second.innerSeparator ?? first.innerSeparator,
       postfixSeparator: second.postfixSeparator ?? first.postfixSeparator,
     };
-  }
+  },
 
-  static overwrite(initial: WonderOptions, overrides: WonderOptions): void {
+  overwrite(initial: WonderOptions, overrides: WonderOptions): void {
     // tslint:disable-next-line: forin
     for (const key in overrides) {
       switch (key) {
@@ -66,9 +63,9 @@ export default class WonderOptionsHelper {
           break;
       }
     }
-  }
+  },
 
-  static clone(options: WonderOptions): WonderOptions {
+  clone(options: WonderOptions): WonderOptions {
     const clonedOptions: WonderOptions = {};
 
     // tslint:disable-next-line: forin
@@ -95,14 +92,15 @@ export default class WonderOptionsHelper {
     }
 
     return clonedOptions;
-  }
+  },
 
-  static isWonderOptions(obj: any): obj is WonderOptions {
+  isWonderOptions(obj: any): obj is WonderOptions {
     return (
       typeof obj === "object" &&
       "style" in obj &&
       "content" in obj &&
       "formatters" in obj
     );
-  }
-}
+  },
+};
+export default WonderOptionsHelper;
