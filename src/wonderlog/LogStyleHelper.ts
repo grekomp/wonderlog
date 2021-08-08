@@ -1,7 +1,7 @@
 import { LogStyle } from "./LogStyle";
 
-export default class LogStyleHelper {
-  static GetCss(style?: LogStyle): string {
+const LogStyleHelper = {
+  GetCss(style?: LogStyle): string {
     if (style == null) return "";
 
     const cssEntries = [];
@@ -11,12 +11,13 @@ export default class LogStyleHelper {
         cssEntries.push(key.replace("_", "-") + ": " + style[key]);
     }
     return cssEntries.join("; ");
-  }
+  },
 
-  static Clone(style?: LogStyle): LogStyle {
+  Clone(style?: LogStyle): LogStyle {
     return Object.assign({}, style);
-  }
-  static Merge(...styles: (LogStyle | undefined)[]): LogStyle {
+  },
+  Merge(...styles: (LogStyle | undefined)[]): LogStyle {
     return Object.assign({}, ...styles);
-  }
-}
+  },
+};
+export default LogStyleHelper;
