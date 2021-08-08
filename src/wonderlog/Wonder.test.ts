@@ -139,6 +139,11 @@ const wonderTestCases: WonderTestCase[] = [
     elements: [wonder.pre("<").post(">")("inner text")],
     expected: ["%c<%c%cinner text%c%c>", "", "", "", "", ""],
   },
+  {
+    elements: [wonder.formatObjectAsJson({ field: "value" })],
+    expected: ['%c{"field":"value"}', ""],
+    wonderInstance: wonder.formatObjectAsJson,
+  },
 ];
 test.each(wonderTestCases)("Wonder styling test %#", (tc) => {
   const w = tc.wonderInstance ?? wonder;
