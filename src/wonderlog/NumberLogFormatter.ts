@@ -1,4 +1,4 @@
-import LogStyle from "./LogStyleHelper";
+import { LogStyle } from "./LogStyle";
 import WonderHelper from "./WonderHelper";
 import { LogEntry, Wonder } from "./Wonder";
 import WonderImplementation from "./WonderImplementation";

@@ -7,4 +7,5 @@ export type Wonder = WonderImplementation & WonderLogFunction;
 
 export type LogEntry = Wonder | any;
 
-export const wonder = WonderHelper.create();
+const wonder = WonderHelper.create();
+export default wonder;

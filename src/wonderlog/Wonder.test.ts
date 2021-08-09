@@ -1,4 +1,4 @@
-import { wonder, Wonder } from "./Wonder";
+import wonder, { Wonder } from "./Wonder";
 import WonderHelper from "./WonderHelper";
 
 type WonderTestCase = {
