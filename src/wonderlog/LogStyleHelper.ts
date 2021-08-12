@@ -1,4 +1,4 @@
-import { LogStyle } from "./LogStyle";
+import { LogStyle } from "./LogStyle.js";
 
 const LogStyleHelper = {
   GetCss(style?: LogStyle): string {

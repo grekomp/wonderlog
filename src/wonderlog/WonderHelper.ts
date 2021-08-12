@@ -1,13 +1,13 @@
-import LogStyleHelper from "./LogStyleHelper";
+import LogStyleHelper from "./LogStyleHelper.js";
 import {
   definePropertyGetter,
   definePropertyValue,
-} from "./typescriptHelpers/defineProperty";
+} from "./typescriptHelpers/defineProperty.js";
 import { LogEntry, Wonder } from "./Wonder";
-import { LogEntryFlat, WonderEntryFlat } from "./WonderEntryFlat";
-import WonderImplementation from "./WonderImplementation";
-import { WonderOptions } from "./WonderOptions";
-import WonderOptionsHelper from "./WonderOptionsHelper";
+import { WonderEntryFlat } from "./WonderEntryFlat.js";
+import WonderImplementation from "./WonderImplementation.js";
+import { WonderOptions } from "./WonderOptions.js";
+import WonderOptionsHelper from "./WonderOptionsHelper.js";
 
 const WonderHelper = {
   newWonderInstance(options?: WonderOptions): Wonder {

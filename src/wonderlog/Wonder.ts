@@ -1,5 +1,5 @@
-import WonderHelper from "./WonderHelper";
-import WonderImplementation from "./WonderImplementation";
+import WonderHelper from "./WonderHelper.js";
+import WonderImplementation from "./WonderImplementation.js";
 
 type WonderLogFunction = (...content: LogEntry[]) => Wonder;
 

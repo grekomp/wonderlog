@@ -1,5 +1,5 @@
-import { LogStyle } from "./LogStyle";
-import { LogEntry } from "./Wonder";
+import { LogStyle } from "./LogStyle.js";
+import { LogEntry } from "./Wonder.js";
 
 export type WonderEntryFlat = {
   content: LogEntry;

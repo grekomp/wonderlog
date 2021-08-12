@@ -1,10 +1,8 @@
-import { LogStyle } from "./LogStyle";
-import WonderHelper from "./WonderHelper";
-import { LogEntry, Wonder } from "./Wonder";
-import WonderImplementation from "./WonderImplementation";
-import { LogFormatter } from "./LogFormatter";
-import { WonderOptions } from "./WonderOptions";
-import WonderOptionsHelper from "./WonderOptionsHelper";
+import { LogFormatter } from "./LogFormatter.js";
+import { LogStyle } from "./LogStyle.js";
+import { LogEntry } from "./Wonder.js";
+import { WonderOptions } from "./WonderOptions.js";
+import WonderOptionsHelper from "./WonderOptionsHelper.js";
 
 export class NumberLogFormatter extends LogFormatter {
   numberFormat: Intl.NumberFormat;
