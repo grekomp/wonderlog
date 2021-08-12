@@ -1,6 +1,6 @@
-import { LogFormatter } from "./LogFormatter.js";
-import { LogStyle } from "./LogStyle.js";
-import { LogEntry } from "./Wonder.js";
+import { LogFormatter } from "./LogFormatter";
+import { LogStyle } from "./LogStyle";
+import { LogEntry, Wonder } from "./Wonder";
 
 export type WonderOptions = {
   style?: LogStyle;

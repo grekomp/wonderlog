@@ -1,11 +1,11 @@
 // tslint:disable: no-console
-import { LogFormatter } from "./LogFormatter.js";
-import { LogStyle } from "./LogStyle.js";
-import { NumberLogFormatter } from "./NumberLogFormatter.js";
-import { LogEntry, Wonder } from "./Wonder.js";
-import WonderHelper from "./WonderHelper.js";
-import { WonderOptions } from "./WonderOptions.js";
-import WonderOptionsHelper from "./WonderOptionsHelper.js";
+import { LogFormatter } from "./LogFormatter";
+import { LogStyle } from "./LogStyle";
+import { NumberLogFormatter } from "./NumberLogFormatter";
+import { LogEntry, Wonder } from "./Wonder";
+import WonderHelper from "./WonderHelper";
+import { WonderOptions } from "./WonderOptions";
+import WonderOptionsHelper from "./WonderOptionsHelper";
 
 const colors = {
   orange: "hsl(14,  100%, 53%)",

@@ -1,5 +1,5 @@
-import wonder, { Wonder } from "./Wonder.js";
-import WonderHelper from "./WonderHelper.js";
+import wonder, { Wonder } from "./Wonder";
+import WonderHelper from "./WonderHelper";
 
 type WonderTestCase = {
   wonderInstance?: Wonder;

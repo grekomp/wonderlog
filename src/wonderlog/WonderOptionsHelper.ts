@@ -1,5 +1,7 @@
-import LogStyleHelper from "./LogStyleHelper.js";
-import { WonderOptions } from "./WonderOptions.js";
+import LogStyleHelper from "./LogStyleHelper";
+import { Wonder } from "./Wonder";
+import WonderHelper from "./WonderHelper";
+import { WonderOptions } from "./WonderOptions";
 
 const WonderOptionsHelper = {
   default(): WonderOptions {

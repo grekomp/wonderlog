@@ -1,5 +1,5 @@
-import { LogEntry } from "./Wonder.js";
-import { WonderOptions } from "./WonderOptions.js";
+import { LogEntry } from "./Wonder";
+import { WonderOptions } from "./WonderOptions";
 
 export class LogFormatter {
   filter: (entry: LogEntry, parent: WonderOptions) => boolean;
